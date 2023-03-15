@@ -322,7 +322,22 @@ def validate_board(s,o):
     return ''.join(sarr)
 
 
+
 if __name__ == "__main__":
+    nn = NeuralNetwork([2,2,1], activation='sigmoid',debug=False)
+    x = [
+        [0,0],
+        [0,1],
+        [1,0],
+        [1,1]
+    ]
+
+    y = [0,1,1,0]
+
+    s = nn.fit(x,y,learning_rate=0.2,steps=100000, tol=0.02, live_show=True)
+
+
+if __name__ == "a__main__":
     s = input('input board conf: ')
     while True:
         offside = input('Offside (x or o) ?')
