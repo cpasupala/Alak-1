@@ -171,6 +171,29 @@ class NeuralNetwork:
     _ = [i.l_update_w(alpha) for i in self.l_data]
     return
 
+  def terminal_liveupdate(self,step,X,Y,live):
+      if(step):
+        LINE_UP = '\033[1A'
+        LINE_CLEAR = '\x1b[2K'
+        print(LINE_UP, end= LINE_CLEAR)
+        print(LINE_UP, end= LINE_CLEAR)
+        print(LINE_UP, end= LINE_CLEAR)
+        print(LINE_UP, end= LINE_CLEAR)
+        print(LINE_UP, end= LINE_CLEAR)
+        print(LINE_UP, end= LINE_CLEAR)
+      val = []
+      error = 0
+      rmserr = 0
+      print(f'Step {step} : (data,prediction,expected):')
+      for i in range(len(X)):
+          pred = self.fp(X[i])
+          error += (Y[i]-pred)**2
+          print(f'{X[i]} {round(pred[0][0],4)} {Y[i]}')
+      rmserr = (error/len(Y))**0.5
+      print(f'RMS error: {rmserr}')
+
+      return rmserr
+
   def liveupdate(self,step,X,Y,live):
     val = []
     error = 0
@@ -251,12 +274,12 @@ class NeuralNetwork:
 
       # Live update the training progress
       if ((i%print_interval) == 0):
-        rmse.append(self.liveupdate(i,X,Y,live_show))
+        rmse.append(self.terminal_liveupdate(i,X,Y,live_show))
 
       # Check for the model convergence
       if(rmse[-1] < tol):
         success = True
-        self.liveupdate(i,X,Y,live_show)
+        self.terminal_liveupdate(i,X,Y,live_show)
         print('NN training Succeeded!')
         break
       # Model has not converged, so pick up random input and train
@@ -279,7 +302,6 @@ class NeuralNetwork:
       print(f'given spec is {self.spec}')
       for i in range(len(self.l_data)):
         self.l_data[i].dump()
-    plt.show()
     return success
 
   def predict(self,x):
