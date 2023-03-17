@@ -1,5 +1,6 @@
 import numpy as np
 import sys
+import re
 
 class Board:
     __blen = 10
@@ -35,11 +36,11 @@ def validate(s,o):
 if __name__ == "__main__":
     if(len(sys.argv) == 2):
         if (sys.argv[1] == "test"):
-            while(true):
+            while(True):
                 bstr = input("Input the board(type <end> to end): ")
-                os = input("Input offside : ")
                 if (bstr == 'end'):
                     break
+                os = input("Input offside : ")
                 print(f'Cleared Board: {validate(bstr,os)}')
     else:
         b = Board(10,'o')
