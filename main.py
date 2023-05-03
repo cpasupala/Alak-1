@@ -3,6 +3,7 @@ import numpy as np
 from random import choice
 from IPython import display
 import matplotlib.pyplot as plt
+import sys
 
 class NeuralNetwork:
   '''
@@ -345,7 +346,7 @@ def validate_board(s,o):
 
 
 
-if __name__ == "__main__":
+if __name__ == "d__main__":
     nn = NeuralNetwork([2,2,1], activation='sigmoid',debug=False)
     x = [
         [0,0],
@@ -358,13 +359,67 @@ if __name__ == "__main__":
 
     s = nn.fit(x,y,learning_rate=0.2,steps=100000, tol=0.02, live_show=True)
 
+class Board:
+    __blen = 10
+    __barr = np.array(['x','x','x','x','_','_','o','o','o','o'])
+    __offside = 'x'
+    def __init__(self,boardlen=10,os = 'x'):
+        self.blen = boardlen
+        while ((self.blen < 10) | (self.blen > 30)):
+            self.blen = int(input ("A good board length is between 10 and 30: "))
+        self.barr = np.array((' '.join('x'*4+'_'*(self.blen-8)+'o'*4)).split(' '))
+        self.offside = os
+        return
 
-if __name__ == "a__main__":
-    s = input('input board conf: ')
-    while True:
-        offside = input('Offside (x or o) ?')
-        if ((offside == 'x') or (offside =='o')):
-            break
-    out = validate_board(s,offside)
-    print(out)
+    def clean_board(self,s):
+        sarr = np.array((' '.join(s)).split(' '))
+        if (self.offside == 'x'):
+        # Parse for the kill and then for suicide
+            kill = re.compile('(?=(xo+x))')
+            suicide = re.compile('(?=(ox+o))')
+        elif (self.offside =='o'):
+            kill = re.compile('(?=(ox+o))')
+            suicide = re.compile('(?=(xo+x))')
+        else:
+            raise Exception('Wrong input for offside')
+
+        for m in re.finditer(kill,s):
+            sarr[m.start(1)+1:m.end(1)-1] = (' '.join('_'*(len(m.group(1))-2))).split(' ')
+        s = ''.join(sarr)
+        for m in re.finditer(suicide,s):
+            sarr[m.start(1)+1:m.end(1)-1] = (' '.join('_'*(len(m.group(1))-2))).split(' ')
+        return sarr
+
+
+    def validate(self,s):
+        if (len(s) != self.blen):
+            print("Wrong board length. Returning with same string")
+            return s
+
+        sarr = np.array((' '.join(s)).split(' '))
+        diff = np.not_equal(sarr.view(np.uint32),self.barr.view(np.uint32))
+        if(diff.sum() != 1):
+            print ("Warning: Could be illegal move - Check")
+            print (f'Board last state {self.barr}\nBoard Current State {sarr}')
+            print('Continuing anyway .. ')
+
+        self.barr = self.clean_board(''.join(sarr))
+        return self.barr
+
+        
+if __name__ == "__main__":
+    b = ''
+    if (len(sys.argv) == 2):
+        b = Board(int(sys.argv[1]))
+    elif (len(sys.argv) == 3):
+        b = Board(int(sys.argv[1]), sys.argv[2])
+    else:
+        b = Board()
+    bstr = ''.join(b.barr)
+    print(f'Board initialized to : {bstr}\nThe offensive side   : {b.offside}')
+    while (bstr != "end"):
+        bstr = input (f'{bstr} Make a move: ')
+        bstr = b.validate(bstr)
+        print(f'Cleared Board: {bstr}')
+
 
