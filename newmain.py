@@ -1,7 +1,9 @@
 import numpy as np
+import pickle
 import sys
 import re
 import random
+from pathlib import Path
 
 class Board:
     __blen = 10
@@ -11,6 +13,7 @@ class Board:
     __debug=True
     __kholoc = []
     rounds = np.array([])
+    outcome = np.array([])
     def __init__(self,boardlen=10,os = 'x',debug=False):
         self.blen = boardlen
         while ((self.blen <= 10) | (self.blen > 30)):
@@ -20,6 +23,7 @@ class Board:
         self.debug=debug
         self.kholoc = []
         self.rounds = np.array([])
+        self.outcome = np.array([])
         return
 
     def get_board(self,sep=''):
@@ -52,8 +56,40 @@ class Board:
             print(printstr)
         return
 
-    def dump_rounds (self):
-        print(self.rounds.shape)
+    def createlabel (self):
+        if(self.last_played == 'x'):
+            # We know 'x' won and it played first
+            labelstr = '10'*(int((len(self.rounds)+1)/2))
+            self.outcome = np.array((' '.join(labelstr)).split(' '))[0:-1]
+            if(self.debug):
+                print(self.outcome,self.outcome.shape)
+        else:
+            # We know 'o' won and it played second 
+            labelstr = '01'*(int(len(self.rounds)/2))
+            self.outcome = np.array((' '.join(labelstr)).split(' '))
+            if (self.debug):
+                print(self.outcome,self.outcome.shape)
+        if (self.debug):
+            print(self.rounds.shape,type(self.rounds),type(self.outcome))
+        if Path("./alak_x.pkl").is_file():
+            rounds = np.array([])
+            outcome = np.array([])
+            with open("./alak_x.pkl","rb") as rfile:
+                rounds = pickle.load(rfile)
+                rounds = np.vstack((rounds,self.rounds))
+            with open("./alak_y.pkl","rb") as rfile:
+                outcome = pickle.load(rfile)
+                outcome = np.concatenate((outcome,self.outcome))
+            with open("./alak_x.pkl","wb") as wfile:
+                pickle.dump(rounds,wfile)
+            with open("./alak_y.pkl","wb") as wfile:
+                pickle.dump(outcome,wfile)
+        else:
+            with open("./alak_x.pkl","wb") as wfile:
+                pickle.dump(self.rounds,wfile)
+            with open("./alak_y.pkl","wb") as wfile:
+                pickle.dump(self.outcome,wfile)
+
         return
 
     def board_validate(self):
@@ -133,15 +169,15 @@ if __name__ == "__main__":
                 b.random_play('x')
                 game_on = b.board_validate()
                 if(not game_on):
-                    #print('x wins the game')
-                    b.dump_rounds()
+                    print(f'x wins the game: {i+1}')
+                    b.createlabel()
                     xwins +=1
                     break
                 b.random_play('o')
                 game_on = b.board_validate()
                 if(not game_on):
-                    #print('o wins the game')
-                    b.dump_rounds()
+                    print(f'o wins the game: {i+1}')
+                    b.createlabel()
                     owins +=1
                     break
         print(f'x wins {(xwins/no_games)*100:.1f}% of {no_games } played')
