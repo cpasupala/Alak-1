@@ -95,7 +95,7 @@ class Board:
                     rounds = np.vstack((rounds,self.rounds))
                 with open("./alak_y.pkl","rb") as rfile:
                     outcome = pickle.load(rfile)
-                    outcome = np.concatenate((outcome,self.outcome))
+                    outcome = np.concatenate((outcome,self.outcome.astype(int)))
                 with open("./alak_x.pkl","wb") as wfile:
                     pickle.dump(rounds,wfile)
                 with open("./alak_y.pkl","wb") as wfile:
@@ -104,7 +104,7 @@ class Board:
                 with open("./alak_x.pkl","wb") as wfile:
                     pickle.dump(self.rounds,wfile)
                 with open("./alak_y.pkl","wb") as wfile:
-                    pickle.dump(self.outcome,wfile)
+                    pickle.dump(self.outcome.astype(int),wfile)
         return
 
     def board_validate(self):
