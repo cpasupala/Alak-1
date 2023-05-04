@@ -12,8 +12,9 @@ class Board:
     __lastplayed = 'x'
     __debug=True
     __kholoc = []
-    rounds = np.array([])
-    outcome = np.array([])
+    __rounds = np.array([])
+    __outcome = np.array([])
+    __suicide = False
     def __init__(self,boardlen=10,os = 'x',debug=False):
         self.blen = boardlen
         while ((self.blen <= 10) | (self.blen > 30)):
@@ -24,6 +25,7 @@ class Board:
         self.kholoc = []
         self.rounds = np.array([])
         self.outcome = np.array([])
+        self.suicide = False
         return
 
     def get_board(self,sep=''):
@@ -35,16 +37,16 @@ class Board:
         c_idx = np.argwhere(self.barr == offside).reshape(1,-1)[0]
         # find the blank indices
         b_idx = np.argwhere(self.barr == '_').reshape(1,-1)[0]
-        if(len(b_idx) == 0):
-            raise Exception("random_play: nowhere to place the rock!")
         # Now, remove kholocations
         b_idx = np.delete(b_idx, np.isin(b_idx,self.kholoc)) 
+        if(len(b_idx) == 0):
+            raise Exception("random_play: nowhere to place the rock!")
         randrock = random.choice(c_idx)
         randplace = random.choice(b_idx)
         printstr = ''
         if(self.debug):
             printstr += f'offside is {offside}: board is [{self.barr}]: {randrock}->{randplace} ->newboard '
-        prevarr = self.barr
+        prevarr = np.array(self.barr)
         self.barr[[randrock,randplace]] = self.barr[[randplace,randrock]]
         if (len(self.rounds)):
             self.rounds = np.vstack((self.rounds,np.concatenate((prevarr,self.barr))))
@@ -56,40 +58,53 @@ class Board:
             print(printstr)
         return
 
+    def encode(self,rdata,offside):
+        retdata = np.array(rdata)
+        retdata = np.where(retdata=='_','0',retdata)
+        if (offside == 'x'):
+            retdata = np.where(retdata=='x','1',retdata)
+            retdata = np.where(retdata=='o','-1',retdata)
+        else:
+            retdata = np.where(retdata=='x','-1',retdata)
+            retdata = np.where(retdata=='o','1',retdata)
+        return retdata.astype(int)    
+
     def createlabel (self):
         if(self.last_played == 'x'):
             # We know 'x' won and it played first
             labelstr = '10'*(int((len(self.rounds)+1)/2))
             self.outcome = np.array((' '.join(labelstr)).split(' '))[0:-1]
+            self.rounds = self.encode(self.rounds,'x')
             if(self.debug):
                 print(self.outcome,self.outcome.shape)
         else:
             # We know 'o' won and it played second 
             labelstr = '01'*(int(len(self.rounds)/2))
             self.outcome = np.array((' '.join(labelstr)).split(' '))
+            self.rounds = self.encode(self.rounds,'o')
             if (self.debug):
                 print(self.outcome,self.outcome.shape)
         if (self.debug):
             print(self.rounds.shape,type(self.rounds),type(self.outcome))
-        if Path("./alak_x.pkl").is_file():
-            rounds = np.array([])
-            outcome = np.array([])
-            with open("./alak_x.pkl","rb") as rfile:
-                rounds = pickle.load(rfile)
-                rounds = np.vstack((rounds,self.rounds))
-            with open("./alak_y.pkl","rb") as rfile:
-                outcome = pickle.load(rfile)
-                outcome = np.concatenate((outcome,self.outcome))
-            with open("./alak_x.pkl","wb") as wfile:
-                pickle.dump(rounds,wfile)
-            with open("./alak_y.pkl","wb") as wfile:
-                pickle.dump(outcome,wfile)
-        else:
-            with open("./alak_x.pkl","wb") as wfile:
-                pickle.dump(self.rounds,wfile)
-            with open("./alak_y.pkl","wb") as wfile:
-                pickle.dump(self.outcome,wfile)
-
+        if (len(self.rounds) < 30):
+            if Path("./alak_x.pkl").is_file():
+                rounds = np.array([])
+                outcome = np.array([])
+                with open("./alak_x.pkl","rb") as rfile:
+                    rounds = pickle.load(rfile)
+                    rounds = np.vstack((rounds,self.rounds))
+                with open("./alak_y.pkl","rb") as rfile:
+                    outcome = pickle.load(rfile)
+                    outcome = np.concatenate((outcome,self.outcome))
+                with open("./alak_x.pkl","wb") as wfile:
+                    pickle.dump(rounds,wfile)
+                with open("./alak_y.pkl","wb") as wfile:
+                    pickle.dump(outcome,wfile)
+            else:
+                with open("./alak_x.pkl","wb") as wfile:
+                    pickle.dump(self.rounds,wfile)
+                with open("./alak_y.pkl","wb") as wfile:
+                    pickle.dump(self.outcome,wfile)
         return
 
     def board_validate(self):
@@ -119,10 +134,16 @@ class Board:
             if(self.debug):
                 print(f'board_validate: Detected suicide at {m.start(1)}:{m.end(1)}')
             self.barr[m.start(1)+1:m.end(1)-1] = (' '.join('_'*(len(m.group(1))-2))).split(' ')
+            self.suicide = True
+            return False
+            
         if(len(np.argwhere(self.barr == opponent)) >1):
             return True
         else:
             return False
+    
+    def suicide_detected(self):
+        return self.suicide
 
 
 def validate(s,o):
@@ -155,7 +176,7 @@ if __name__ == "__main__":
                 os = input("Input offside : ")
                 print(f'Cleared Board: {validate(bstr,os)}')
     else:
-        no_games = 2
+        no_games = 60000
         xwins = 0
         owins = 0
         for i in range(no_games):
@@ -169,6 +190,9 @@ if __name__ == "__main__":
                 b.random_play('x')
                 game_on = b.board_validate()
                 if(not game_on):
+                    if(b.suicide_detected()):
+                        print("suicide detected. Discarding game")
+                        break
                     print(f'x wins the game: {i+1}')
                     b.createlabel()
                     xwins +=1
@@ -176,9 +200,12 @@ if __name__ == "__main__":
                 b.random_play('o')
                 game_on = b.board_validate()
                 if(not game_on):
+                    if(b.suicide_detected()):
+                        print("suicide detected. Discarding game")
+                        break
                     print(f'o wins the game: {i+1}')
                     b.createlabel()
                     owins +=1
                     break
-        print(f'x wins {(xwins/no_games)*100:.1f}% of {no_games } played')
+        print(f'x wins {xwins} games, o wins {owins}games. Total played: {no_games}')
 
