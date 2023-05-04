@@ -13,6 +13,7 @@ def encode(X,y):
     return X.astype(int),y.astype(int)
 
 if __name__ == "__main__":
+    savemodel= False
     if Path("./alak_y.pkl").is_file():
         y = pickle.load(open("./alak_y.pkl","rb"))
     if Path("./alak_x.pkl").is_file():
@@ -28,3 +29,6 @@ if __name__ == "__main__":
     clf.fit(x_train,y_train)
     print(f'Score on Trained Data: {clf.score(x_train,y_train):.2f}')
     print(f'Score on Testing Data: {clf.score(x_test,y_test):.2f}')
+    if(savemodel):
+        with open('perfect_model.pkl','wb') as f:
+            pickle.dump(clf,f)
