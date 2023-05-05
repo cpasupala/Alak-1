@@ -38,7 +38,7 @@ class Board:
         # find the blank indices
         b_idx = np.argwhere(self.barr == '_').reshape(1,-1)[0]
         # Now, remove kholocations
-        b_idx = np.delete(b_idx, np.isin(b_idx,self.kholoc)) 
+        #b_idx = np.delete(b_idx, np.isin(b_idx,self.kholoc)) 
         if(len(b_idx) == 0):
             raise Exception("random_play: nowhere to place the rock!")
         randrock = random.choice(c_idx)
@@ -126,7 +126,7 @@ class Board:
             if(self.debug):
                 print(f'board_validate: Detected kill at {m.start(1)}:{m.end(1)}')
             self.barr[m.start(1)+1:m.end(1)-1] = (' '.join('_'*(len(m.group(1))-2))).split(' ')
-            if((m.end(1)-m.start(1)) == 5):
+            if((m.end(1)-m.start(1)) == 3):
                 # We got a kill here
                 self.kholoc.append(m.start(1)+1)
         s = ''.join(self.barr)
