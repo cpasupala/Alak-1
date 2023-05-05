@@ -53,8 +53,6 @@ class NNClass:
         X = np.array(X,dtype=float)
 
         probarray = self.model.predict_proba(X)[:,1]
-        print(rx)
-        print(probarray)
         return (rx[np.argmax(probarray)])
         
 
@@ -83,7 +81,7 @@ class Board:
         self.err_code = 0
         self.kholoc = []
         self.debug = False
-        self.showplay = True
+        self.showplay = False
         return
 
     def detect_suicide(self, board, rock):
@@ -213,7 +211,7 @@ class Board:
             self.err_code = -4
             return False
 
-manual = True
+manual = False
 def randplay(board,rock,kholocs):
     if(manual):
         print(''.join(board))
@@ -250,7 +248,7 @@ def detect_suicide(board, rock):
 if __name__ == "__main__":
 
     # Toss
-    no_games = 1
+    no_games = 100
     ANN_vict_stat = []
     ann_vict = 0
     for games in range(no_games):
