@@ -13,7 +13,7 @@ def encode(X,y):
     return X.astype(int),y.astype(int)
 
 if __name__ == "__main__":
-    savemodel= False
+    savemodel= True
     if Path("./alak_y.pkl").is_file():
         y = pickle.load(open("./alak_y.pkl","rb"))
     if Path("./alak_x.pkl").is_file():
@@ -22,7 +22,7 @@ if __name__ == "__main__":
     #X, y = encode(X,y)
     x_train, x_test, y_train, y_test = train_test_split(X,y,test_size=0.25,random_state=42)
 
-    print(f'Training data size: {x_train.shape}, {y_train.shape}')
+    print(f'Training data size: {x_train.shape}, {y_train.shape}\nUniques:{np.unique(x_train)},{np.unique(y_train)}')
     print(f'Test data size: {x_test.shape}, {y_test.shape}')
 
     clf = MLPClassifier(solver="adam", hidden_layer_sizes=[60,30], activation="relu", max_iter=int(1e7),learning_rate_init=float(5e-4))

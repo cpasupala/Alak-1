@@ -175,37 +175,39 @@ if __name__ == "__main__":
                     break
                 os = input("Input offside : ")
                 print(f'Cleared Board: {validate(bstr,os)}')
-    else:
-        no_games = 60000
-        xwins = 0
-        owins = 0
-        for i in range(no_games):
-            b = Board(14,'x')
-            board_str = b.get_board(sep=' ')
-            #print(f'Board initialized to : {board_str}')
-            #print(f'The offensive side   : {b.offside}')
+        elif (sys.argv[1] == "generate"):
+            no_games = 60000
+            xwins = 0
+            owins = 0
+            for i in range(no_games):
+                b = Board(14,'x')
+                board_str = b.get_board(sep=' ')
+                #print(f'Board initialized to : {board_str}')
+                #print(f'The offensive side   : {b.offside}')
 
-            game_on = True
-            while(game_on):
-                b.random_play('x')
-                game_on = b.board_validate()
-                if(not game_on):
-                    if(b.suicide_detected()):
-                        print("suicide detected. Discarding game")
+                game_on = True
+                while(game_on):
+                    b.random_play('x')
+                    game_on = b.board_validate()
+                    if(not game_on):
+                        if(b.suicide_detected()):
+                            print("suicide detected. Discarding game")
+                            break
+                        print(f'x wins the game: {i+1}')
+                        b.createlabel()
+                        xwins +=1
                         break
-                    print(f'x wins the game: {i+1}')
-                    b.createlabel()
-                    xwins +=1
-                    break
-                b.random_play('o')
-                game_on = b.board_validate()
-                if(not game_on):
-                    if(b.suicide_detected()):
-                        print("suicide detected. Discarding game")
+                    b.random_play('o')
+                    game_on = b.board_validate()
+                    if(not game_on):
+                        if(b.suicide_detected()):
+                            print("suicide detected. Discarding game")
+                            break
+                        print(f'o wins the game: {i+1}')
+                        b.createlabel()
+                        owins +=1
                         break
-                    print(f'o wins the game: {i+1}')
-                    b.createlabel()
-                    owins +=1
-                    break
-        print(f'x wins {xwins} games, o wins {owins}games. Total played: {no_games}')
+            print(f'x wins {xwins} games, o wins {owins}games. Total played: {no_games}')
+    else:
+        print("Usage:\npython newmain.py [test|generate]")
 
