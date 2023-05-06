@@ -9,13 +9,13 @@ from sklearn.metrics import classification_report, confusion_matrix
 
 ylabel = []
 X = []
-if Path("./alak_y.pkl").is_file():
+if Path("./alak_y_addon.pkl").is_file():
     print("File alak_y.pkl exists")
-    ylabel = pickle.load(open("./alak_y.pkl","rb"))
+    ylabel = pickle.load(open("./alak_y_addon.pkl","rb"))
     print(ylabel.shape,np.unique(ylabel),type(ylabel[0]))
-if Path("./alak_x.pkl").is_file():
+if Path("./alak_x_addon.pkl").is_file():
     print("File alak_x.pkl exists")
-    X = pickle.load(open("./alak_x.pkl","rb"))
+    X = pickle.load(open("./alak_x_addon.pkl","rb"))
     print(X.shape,np.unique(X),type(X[0][0]))
 else:
     print("File Does not exist")
@@ -38,3 +38,4 @@ print(ylabel.mean())
 #X = X.astype(int)
 #print(type(X[0][0]),np.unique(X))
 
+print(len(np.array([])))

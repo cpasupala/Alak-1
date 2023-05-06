@@ -52,6 +52,7 @@ class NNClass:
         X = np.where(X==opponent,-1,X)
         X = np.array(X,dtype=float)
 
+        #probarray = self.model.predict_proba(X)[:,1:].sum(axis=1)
         probarray = self.model.predict_proba(X)[:,1]
         return (rx[np.argmax(probarray)])
         
@@ -66,6 +67,8 @@ class Board:
     kholoc = []
     debug = False
     showplay = True
+    rounds =[]
+    gain = []
     
     def __init__(self,blen,toss):
         self.blen = blen
@@ -82,6 +85,9 @@ class Board:
         self.kholoc = []
         self.debug = False
         self.showplay = False
+        self.suicide_in_game = False
+        self.rounds = np.array([])
+        self.gain = []
         return
 
     def detect_suicide(self, board, rock):
@@ -121,7 +127,7 @@ class Board:
             if(self.debug):
                 print(f'board_validate: Detected kill at {m.start(1)}:{m.end(1)}')
             self.barr[m.start(1)+1:m.end(1)-1] = (' '.join('_'*(len(m.group(1))-2))).split(' ')
-            gain += m.end(1)-m.start(1)-4
+            gain += m.end(1)-m.start(1)-2
             if((m.end(1)-m.start(1)) == 5):
                 # We got a kill here
                 self.kholoc.append(m.start(1)+1)
@@ -130,7 +136,8 @@ class Board:
             if(self.debug):
                 print(f'board_validate: Detected suicide at {m.start(1)}:{m.end(1)}')
             self.barr[m.start(1)+1:m.end(1)-1] = (' '.join('_'*(len(m.group(1))-2))).split(' ')
-            gain -= m.end(1)-m.start(1)-4
+            gain -= m.end(1)-m.start(1)-2
+        self.gain.append(gain)
             
         if(len(np.argwhere(self.barr == opponent)) >1):
             return True
@@ -168,7 +175,7 @@ class Board:
             return False
         '''
         
-        randrock = random.choice(r_idx)
+        randrock = 0
         suicide_list = []
         for randrock in r_idx:
             for x in b_idx:
@@ -187,10 +194,16 @@ class Board:
             print(f'{rock} moved {u_rock}->{u_place}')
 
         if(np.isin(u_rock,r_idx) and np.isin(u_place,b_idx)):
+            prevboard = np.array(self.barr)
             if (self.showplay):
                 bstr = ''.join(self.barr)
                 printstr = f'{bstr} [{rock}:{u_rock}->{u_place}] '
             self.barr[[u_rock,u_place]] = self.barr[[u_place,u_rock]]
+            if(len(self.rounds)):
+                self.rounds = np.vstack((self.rounds,np.concatenate((prevboard,self.barr))))
+            else:
+                self.rounds = np.concatenate((prevboard,self.barr))
+
             if(self.showplay):
                 bstr = ''.join(self.barr)
                 print(printstr+f'{bstr}')
@@ -198,6 +211,7 @@ class Board:
                 if ((u_rock,u_place) in suicide_list):
                     print(Fore.RED+f'Warning: Player {rock} made a suicide move. Ignoring')
                     print(Style.RESET_ALL)
+                    self.suicide_in_game = True
             # Clear Board and check for victory !!
             if(self.validate(rock)):
                 return True
@@ -243,6 +257,39 @@ def detect_suicide(board, rock):
 
     return False
 
+def pickle_rounds(r,g,rock):
+    o = np.array(g)
+    if(rock=='x'):
+        r = np.where(r=='x',1,r)
+        r = np.where(r=='o',-1,r)
+        r = np.where(r=='_',0,r)
+    else:
+        r = np.where(r=='o',1,r)
+        r = np.where(r=='x',-1,r)
+        r = np.where(r=='_',0,r)
+    r = np.array(r,dtype=float)
+
+
+    if Path("./alak_x_addon.pkl").is_file():
+        rounds = np.array([])
+        outcome = np.array([])
+        with open("./alak_x_addon.pkl","rb") as rfile:
+            rounds = pickle.load(rfile)
+            rounds = np.vstack((rounds,r))
+        with open("./alak_y_addon.pkl","rb") as rfile:
+            outcome = pickle.load(rfile)
+            outcome = np.concatenate((outcome,o))
+        with open("./alak_x_addon.pkl","wb") as wfile:
+            pickle.dump(rounds,wfile)
+        with open("./alak_y_addon.pkl","wb") as wfile:
+            pickle.dump(outcome,wfile)
+    else:
+        with open("./alak_x_addon.pkl","wb") as wfile:
+            pickle.dump(r,wfile)
+        with open("./alak_y_addon.pkl","wb") as wfile:
+            pickle.dump(o,wfile)
+    return
+
 
 
 if __name__ == "__main__":
@@ -251,6 +298,7 @@ if __name__ == "__main__":
     no_games = 100
     ANN_vict_stat = []
     ann_vict = 0
+    suicide_games = 0
     for games in range(no_games):
         game_on = True
         toss = np.random.randint(2)
@@ -279,13 +327,21 @@ if __name__ == "__main__":
         while (game_on):
             game_on = b.play_n_validate(altfuncs[i%2],rocks[i%2])
             i += 1
+
         if(i%2):
             ANN_vict_stat.append([nn_rock,1,i+1])
             ann_vict += 1
+            #if(not b.suicide_in_game):
+                #pickle_rounds(b.rounds,b.gain,nn_rock)
             #print(f'NN Won in {i} steps!!')
         else:
             ANN_vict_stat.append([nn_rock,0,i+1])
+            #if(not b.suicide_in_game):
+                #pickle_rounds(b.rounds,b.gain,rand_rock)
             #print(f'RANDPLAY Won in {i} steps!!')
+        if (b.suicide_in_game):
+            suicide_games += 1
+        print(f'total rounds {b.rounds.shape}')
 
     #print(np.array(ANN_vict_stat))
-    print(f'NN won {ann_vict} out of {no_games} games')
+    print(f'NN won {ann_vict} out of {no_games} games with {suicide_games} with suicide')
