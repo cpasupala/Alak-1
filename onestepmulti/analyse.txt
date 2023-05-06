@@ -1,0 +1,453 @@
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 25 steps!!
+total rounds (26, 28)
+NN Won in 35 steps!!
+total rounds (36, 28)
+NN Won in 5 steps!!
+total rounds (5, 28)
+NN Won in 19 steps!!
+total rounds (20, 28)
+NN Won in 35 steps!!
+total rounds (35, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 11 steps!!
+total rounds (11, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 43 steps!!
+total rounds (43, 28)
+NN Won in 11 steps!!
+total rounds (11, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+RANDPLAY Won in 18 steps!!
+total rounds (19, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 27 steps!!
+total rounds (28, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 17 steps!!
+total rounds (18, 28)
+NN Won in 31 steps!!
+total rounds (31, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 61 steps!!
+total rounds (61, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 27 steps!!
+total rounds (28, 28)
+NN Won in 13 steps!!
+total rounds (13, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 19 steps!!
+total rounds (19, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 11 steps!!
+total rounds (12, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 9 steps!!
+total rounds (9, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 7 steps!!
+total rounds (7, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 23 steps!!
+total rounds (24, 28)
+NN Won in 13 steps!!
+total rounds (14, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 15 steps!!
+total rounds (16, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 15 steps!!
+total rounds (16, 28)
+NN Won in 9 steps!!
+total rounds (10, 28)
+NN Won in 37 steps!!
+total rounds (37, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 27 steps!!
+total rounds (28, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 17 steps!!
+total rounds (17, 28)
+RANDPLAY Won in 2 steps!!
+total rounds (3, 28)
+NN Won in 13 steps!!
+total rounds (13, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 11 steps!!
+total rounds (11, 28)
+RANDPLAY Won in 14 steps!!
+total rounds (14, 28)
+RANDPLAY Won in 2 steps!!
+total rounds (3, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 11 steps!!
+total rounds (11, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 13 steps!!
+total rounds (13, 28)
+NN Won in 9 steps!!
+total rounds (9, 28)
+NN Won in 51 steps!!
+total rounds (51, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 13 steps!!
+total rounds (13, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 23 steps!!
+total rounds (23, 28)
+NN Won in 5 steps!!
+total rounds (6, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 7 steps!!
+total rounds (7, 28)
+NN Won in 69 steps!!
+total rounds (69, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 23 steps!!
+total rounds (23, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 11 steps!!
+total rounds (12, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 27 steps!!
+total rounds (27, 28)
+RANDPLAY Won in 54 steps!!
+total rounds (54, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 25 steps!!
+total rounds (25, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 9 steps!!
+total rounds (10, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 19 steps!!
+total rounds (19, 28)
+RANDPLAY Won in 16 steps!!
+total rounds (17, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 25 steps!!
+total rounds (25, 28)
+NN Won in 25 steps!!
+total rounds (26, 28)
+NN Won in 11 steps!!
+total rounds (11, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 27 steps!!
+total rounds (28, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 15 steps!!
+total rounds (16, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 11 steps!!
+total rounds (12, 28)
+NN Won in 39 steps!!
+total rounds (39, 28)
+NN Won in 27 steps!!
+total rounds (28, 28)
+NN Won in 53 steps!!
+total rounds (53, 28)
+NN Won in 29 steps!!
+total rounds (30, 28)
+NN Won in 25 steps!!
+total rounds (26, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 11 steps!!
+total rounds (12, 28)
+NN Won in 33 steps!!
+total rounds (33, 28)
+RANDPLAY Won in 6 steps!!
+total rounds (7, 28)
+NN Won in 13 steps!!
+total rounds (14, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 5 steps!!
+total rounds (6, 28)
+NN Won in 13 steps!!
+total rounds (13, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 23 steps!!
+total rounds (23, 28)
+NN Won in 13 steps!!
+total rounds (14, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 35 steps!!
+total rounds (35, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 11 steps!!
+total rounds (11, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 57 steps!!
+total rounds (57, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 15 steps!!
+total rounds (16, 28)
+RANDPLAY Won in 16 steps!!
+total rounds (17, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 65 steps!!
+total rounds (66, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 29 steps!!
+total rounds (29, 28)
+NN Won in 5 steps!!
+total rounds (6, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 19 steps!!
+total rounds (20, 28)
+NN Won in 7 steps!!
+total rounds (7, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 31 steps!!
+total rounds (32, 28)
+NN Won in 13 steps!!
+total rounds (13, 28)
+RANDPLAY Won in 22 steps!!
+total rounds (22, 28)
+NN Won in 9 steps!!
+total rounds (9, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 17 steps!!
+total rounds (18, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 9 steps!!
+total rounds (10, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 15 steps!!
+total rounds (16, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 13 steps!!
+total rounds (13, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 21 steps!!
+total rounds (21, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 11 steps!!
+total rounds (11, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 33 steps!!
+total rounds (33, 28)
+NN Won in 9 steps!!
+total rounds (9, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 17 steps!!
+total rounds (18, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 23 steps!!
+total rounds (23, 28)
+NN Won in 17 steps!!
+total rounds (17, 28)
+NN Won in 11 steps!!
+total rounds (11, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 15 steps!!
+total rounds (16, 28)
+[31mWarning: Player o made a suicide move. Ignoring
+[0m
+NN Won in 37 steps!!
+total rounds (37, 28)
+NN Won in 9 steps!!
+total rounds (9, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 13 steps!!
+total rounds (14, 28)
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+[31mWarning: Player x made a suicide move. Ignoring
+[0m
+NN Won in 15 steps!!
+total rounds (16, 28)
+NN Won in 7 steps!!
+total rounds (7, 28)
+[['o' '1' '26']
+ ['o' '1' '36']
+ ['x' '1' '6']
+ ['o' '1' '20']
+ ['x' '1' '36']
+ ['x' '1' '12']
+ ['x' '1' '44']
+ ['x' '1' '12']
+ ['o' '0' '19']
+ ['o' '1' '28']
+ ['o' '1' '18']
+ ['x' '1' '32']
+ ['x' '1' '62']
+ ['o' '1' '28']
+ ['x' '1' '14']
+ ['x' '1' '20']
+ ['o' '1' '12']
+ ['x' '1' '10']
+ ['x' '1' '8']
+ ['o' '1' '24']
+ ['o' '1' '14']
+ ['o' '1' '16']
+ ['o' '1' '16']
+ ['o' '1' '10']
+ ['x' '1' '38']
+ ['o' '1' '28']
+ ['x' '1' '18']
+ ['o' '0' '3']
+ ['x' '1' '14']
+ ['x' '1' '12']
+ ['x' '0' '15']
+ ['o' '0' '3']
+ ['x' '1' '12']
+ ['x' '1' '14']
+ ['x' '1' '10']
+ ['x' '1' '52']
+ ['x' '1' '14']
+ ['x' '1' '24']
+ ['o' '1' '6']
+ ['x' '1' '8']
+ ['x' '1' '70']
+ ['x' '1' '24']
+ ['o' '1' '12']
+ ['x' '1' '28']
+ ['x' '0' '55']
+ ['x' '1' '26']
+ ['o' '1' '10']
+ ['x' '1' '20']
+ ['o' '0' '17']
+ ['x' '1' '26']
+ ['o' '1' '26']
+ ['x' '1' '12']
+ ['o' '1' '28']
+ ['o' '1' '16']
+ ['o' '1' '12']
+ ['x' '1' '40']
+ ['o' '1' '28']
+ ['x' '1' '54']
+ ['o' '1' '30']
+ ['o' '1' '26']
+ ['o' '1' '12']
+ ['x' '1' '34']
+ ['o' '0' '7']
+ ['o' '1' '14']
+ ['o' '1' '6']
+ ['x' '1' '14']
+ ['x' '1' '24']
+ ['o' '1' '14']
+ ['x' '1' '36']
+ ['x' '1' '12']
+ ['x' '1' '58']
+ ['o' '1' '16']
+ ['o' '0' '17']
+ ['o' '1' '66']
+ ['x' '1' '30']
+ ['o' '1' '6']
+ ['o' '1' '20']
+ ['x' '1' '8']
+ ['o' '1' '32']
+ ['x' '1' '14']
+ ['x' '0' '23']
+ ['x' '1' '10']
+ ['o' '1' '18']
+ ['o' '1' '10']
+ ['o' '1' '16']
+ ['x' '1' '14']
+ ['x' '1' '22']
+ ['x' '1' '12']
+ ['x' '1' '34']
+ ['x' '1' '10']
+ ['o' '1' '18']
+ ['x' '1' '24']
+ ['x' '1' '18']
+ ['x' '1' '12']
+ ['o' '1' '16']
+ ['x' '1' '38']
+ ['x' '1' '10']
+ ['o' '1' '14']
+ ['o' '1' '16']
+ ['x' '1' '8']]
+NN won 91 out of 100 games with 57 with suicide
