@@ -2,6 +2,8 @@ import numpy as np
 import re
 import pickle
 import sys
+import colorama
+from colorama import Fore, Style
 
 class State:
     def __init__(self,blen,p1,p2,debug=False):
@@ -242,12 +244,13 @@ class HumanPlayer:
     
     def chooseAction(self,positions):
         while True:
-            row = int(input("From Location: "))
-            col = int(input("To Location: "))
-            action = (row,col)
-            if action in positions:
-                return action
+            rock = int(input(Fore.BLUE+"From Location: "))
+            blank = int(input(Fore.BLUE+"To Location: "))
+            print(Style.RESET_ALL)
+            if np.isin(rock,positions[:,0]) and np.isin(blank,positions[:,1]):
+                return (rock,blank)
             else:
+                print(Fore.RED+"Wrong input. Try again..")
                 continue
         return
 
@@ -270,9 +273,18 @@ if __name__ == "__main__":
             p1.savePolicy()
             p2.savePolicy()
         elif (sys.argv[1] == 'play'):
-            p2 = Player ("computer", exp_rate =0)
-            p2.loadPolicy("policy_o")
-            p1 = HumanPlayer("human")
+            toss = np.random.randint(2)
+            if (toss):
+                print("You won the toss .. Make the first move")
+                p2 = Player ("computer", exp_rate =0)
+                p2.loadPolicy("policy_o")
+                p1 = HumanPlayer("human")
+            else:
+                print("Computer won the toss .. Will make the first move")
+                p1 = Player ("computer", exp_rate =0)
+                p1.loadPolicy("policy_x")
+                p2 = HumanPlayer("human")
+
             st = State(14,p1,p2)
             st.play2()
         else:
