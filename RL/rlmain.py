@@ -1,4 +1,5 @@
 import numpy as np
+import time
 import re
 import pickle
 import sys
@@ -6,7 +7,7 @@ import colorama
 from colorama import Fore, Style
 
 class State:
-    def __init__(self,blen,p1,p2,debug=False):
+    def __init__(self,blen,p1,p2,debug=False,verbose=True):
         self.len = blen
         self.p1 = p1
         self.p2 = p2
@@ -15,6 +16,8 @@ class State:
         self.boardHash = None
         self.playerSymbol = 1
         self.debug = debug
+        self.inparr = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d']
+        self.verbose = verbose
 
     def getHash(self):
         self.boardHash = ''.join(self.board)
@@ -44,6 +47,7 @@ class State:
 
     def validate_board(self):
         opponent = ''
+        gain = 0
         if (self.playerSymbol == 1):
             kill = re.compile('(?=(xo+x))')
             suicide = re.compile('(?=(ox+o))')
@@ -58,13 +62,23 @@ class State:
             if(self.debug):
                 print(f'board_validate: Detected kill at {m.start(1)}:{m.end(1)}')
             self.board[m.start(1)+1:m.end(1)-1] = (' '.join('_'*(len(m.group(1))-2))).split(' ')
+            gain += m.end(1) -m.start(1) -2
 
         s = ''.join(self.board)
         for m in re.finditer(suicide,s):
             if(self.debug):
                 print(f'board_validate: Detected suicide at {m.start(1)}:{m.end(1)}')
             self.board[m.start(1)+1:m.end(1)-1] = (' '.join('_'*(len(m.group(1))-2))).split(' ')
+            gain -= m.end(1)-m.start(1)-2
 
+        if (self.verbose):
+            if (gain >0): 
+                print(Fore.GREEN+f'Gain: {gain}')
+            elif (gain <0):
+                print(Fore.RED+f'Gain: {gain}')
+            else:
+                print(Fore.YELLOW+f'Gain: {gain}')
+            print(Style.RESET_ALL)
         # Switch the symbol for the next player to play
         self.playerSymbol = -1 if self.playerSymbol == 1 else 1
         return
@@ -138,23 +152,41 @@ class State:
                         self.reset()
                         break
     
-    def play2 (self):
-        self.showBoard()
+    def play2 (self,verbose=True):
+        wonby = ''
+        if(verbose):
+            self.showBoard()
+        gameround = 0
         while not self.isEnd:
+            gameround += 1
+            if (verbose):
+                print(f'Round : {gameround}')
             positions = self.availablePositions()
             if (self.p1.name == "computer"):
                 p1_action = self.p1.chooseAction(positions,self.board,self.playerSymbol)
             else:
                 p1_action = self.p1.chooseAction(positions)
 
+            if(verbose):
+                print(Fore.MAGENTA+f'x moves {self.inparr[p1_action[0]]}->{self.inparr[p1_action[1]]}')
+                print(Style.RESET_ALL)
+
             self.updateState(p1_action)
+
+            if(verbose):
+                self.showBoard()
+
             self.validate_board()
-            self.showBoard()
+
+            if(verbose):
+                self.showBoard()
             win = self.winner()
             if win is not None:
                 if win == 1:
+                    wonby = self.p1.name
                     print(self.p1.name, "wins!")
                 else:
+                    wonby = self.p2.name
                     print(self.p2.name, "wins!")
                 self.reset()
                 break
@@ -164,18 +196,31 @@ class State:
                     p2_action = self.p2.chooseAction(positions,self.board,self.playerSymbol)
                 else:
                     p2_action = self.p2.chooseAction(positions)
+                if (verbose):
+                    print(Fore.MAGENTA+f'o moves {self.inparr[p2_action[0]]}->{self.inparr[p2_action[1]]}')
+                    print(Style.RESET_ALL)
+
                 self.updateState(p2_action)
+
+                if(verbose):
+                    self.showBoard()
+
                 self.validate_board()
-                self.showBoard()
+
+                if(verbose):
+                    self.showBoard()
+
                 win = self.winner()
                 if win is not None:
                     if win == -1:
+                        wonby = self.p2.name
                         print(self.p2.name, "wins!")
                     else:
+                        wonby = self.p1.name
                         print(self.p1.name, "wins!")
                     self.reset()
                     break
-        return
+        return wonby
 
     def showBoard(self):
         print(''.join(self.board))
@@ -237,20 +282,43 @@ class Player:
         self.states_value = pickle.load(fr)
         fr.close()
 
+class RandomPlayer:
+    def __init__(self,name):
+        self.name = name
+        return
+
+    def chooseAction(self,positions):
+        return positions[np.random.randint(len(positions))]
+
+    def addState (self,state):
+        pass
+    def feedReward(self,reward):
+        pass
+    def reset(self):
+        pass
+
+    
 class HumanPlayer:
     def __init__(self,name):
         self.name = name
+        self.inpdict = {'0':0,'1':1,'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'a':10,'b':11,'c':12,'d':13}
         return
     
     def chooseAction(self,positions):
         while True:
-            rock = int(input(Fore.BLUE+"From Location: "))
-            blank = int(input(Fore.BLUE+"To Location: "))
-            print(Style.RESET_ALL)
+            try:
+                rock = self.inpdict[input(Fore.BLUE+"From Location: ")]
+                blank =self.inpdict[input(Fore.BLUE+"To Location: ")]
+            except:
+                print(Fore.RED+"Wrong input. Try again..")
+                print(Style.RESET_ALL)
+                continue
+            
             if np.isin(rock,positions[:,0]) and np.isin(blank,positions[:,1]):
                 return (rock,blank)
             else:
                 print(Fore.RED+"Wrong input. Try again..")
+                print(Style.RESET_ALL)
                 continue
         return
 
@@ -261,34 +329,95 @@ class HumanPlayer:
     def reset(self):
         pass
 
+def validate(s,o):
+    sarr = np.array((' '.join(s)).split(' '))
+    if (o == 'x'):
+    # Parse for the kill and then for suicide
+        kill = re.compile('(?=(xo+x))')
+        suicide = re.compile('(?=(ox+o))')
+    elif (o=='o'):
+        kill = re.compile('(?=(ox+o))')
+        suicide = re.compile('(?=(xo+x))')
+    else:
+        raise Exception('Wrong input for offside')
+
+    for m in re.finditer(kill,s):
+        sarr[m.start(1)+1:m.end(1)-1] = (' '.join('_'*(len(m.group(1))-2))).split(' ')
+        print(m.start(1),m.end(1))
+    s = ''.join(sarr)
+    for m in re.finditer(suicide,s):
+        sarr[m.start(1)+1:m.end(1)-1] = (' '.join('_'*(len(m.group(1))-2))).split(' ')
+    return ''.join(sarr)
+
 if __name__ == "__main__":
     if (len(sys.argv) == 2):
         if (sys.argv[1] == 'train'):
             p1 = Player("x")
             p2 = Player("o")
 
-            st = State(14,p1,p2)
-            st.play(100000)
+            st = State(14,p1,p2,verbose=False)
+            st.play(10000000)
 
             p1.savePolicy()
             p2.savePolicy()
-        elif (sys.argv[1] == 'play'):
+        elif (sys.argv[1] == 'play-manual'):
             toss = np.random.randint(2)
             if (toss):
-                print("You won the toss .. Make the first move")
+                print("You won the toss .. You play 'x' and begin the game")
                 p2 = Player ("computer", exp_rate =0)
                 p2.loadPolicy("policy_o")
                 p1 = HumanPlayer("human")
             else:
-                print("Computer won the toss .. Will make the first move")
+                print("Computer won the toss .. You play 'o'")
                 p1 = Player ("computer", exp_rate =0)
                 p1.loadPolicy("policy_x")
                 p2 = HumanPlayer("human")
 
             st = State(14,p1,p2)
             st.play2()
+        elif sys.argv[1] == 'play-random':
+            cwins = 0
+            rwins = 0
+            no_games = int(input("Enter the number of random games to play with trained model[1-10000]: "))
+            if ((no_games >0) and (no_games <10001)):
+                for g in range(no_games):
+                    toss = np.random.randint(2)
+                    if (toss):
+                        # Randguy plays x
+                        p2 = Player ("computer", exp_rate =0)
+                        p2.loadPolicy("policy_o")
+                        p1 = RandomPlayer("random")
+                    else:
+                        p1 = Player ("computer", exp_rate =0)
+                        p1.loadPolicy("policy_x")
+                        p2 = RandomPlayer("random")
+                    st = State(14,p1,p2,verbose=False)
+                    wonby = st.play2(verbose=False)
+                    if(wonby == "computer"):
+                        cwins += 1
+                    else:
+                        rwins += 1
+                print(f'Played {no_games} games: computer won {cwins} at {((cwins/no_games)*100):.1f} %')
+
+
+        elif sys.argv[1] == 'test-board':
+            while(True):
+                bstr = input("Input the board(type <end> to end): ")
+                if (bstr == 'end'):
+                    break
+                os = input("Input offside : ")
+                print(f'Cleared Board: {validate(bstr,os)}')
+
         else:
-            print('Usage : python rlmain.py [train | play]')
+            print('Usage : python rlmain.py [train | play-manual | play-random]')
+            print('\ttrain - do not use unless you are sure. It overwrites the existing model')
+            print('\tplay-manual - Play the game with the trained model')
+            print('\tplay-random - The model plays against random moves')
+            print('\ttest-board - To pass the test cases.')
     else:
-        print('Usage : python rlmain.py [train | play]')
+        print('Usage : python rlmain.py [train | play-manual | play-random]')
+        print('\ttrain - do not use unless you are sure. It overwrites the existing model')
+        print('\tplay-manual - Play the game with the trained model')
+        print('\tplay-random - The model plays against random moves')
+        print('\ttest-board - To pass the test cases.')
         
