@@ -98,13 +98,15 @@ class State:
         if result == 1:
             if(self.debug):
                 print('Detected Victory for x')
-            self.p1.feedReward(1)
+            if (not self.p1.train_onloss):
+                self.p1.feedReward(1)
             self.p2.feedReward(0)
         else:
             if(self.debug):
                 print('Detected Victory for o')
             self.p1.feedReward(0)
-            self.p2.feedReward(1)
+            if (not self.p1.train_onloss):
+                self.p2.feedReward(1)
         return
 
     def reset(self):
@@ -235,13 +237,14 @@ class State:
 
 
 class Player:
-    def __init__ (self,name,exp_rate=0.3):
+    def __init__ (self,name,exp_rate=0.3,tol=False):
         self.name = name
         self.states = []
         self.lr = 0.2
         self.exp_rate = exp_rate
         self.decay_gamma = 0.9
         self.states_value = {}
+        self.train_onloss = tol
     
     def getHash(self,board):
         return ''.join(board)
@@ -291,6 +294,7 @@ class Player:
 class RandomPlayer:
     def __init__(self,name):
         self.name = name
+        self.train_onloss = False
         return
 
     def chooseAction(self,positions):
@@ -386,8 +390,8 @@ if __name__ == "__main__":
         elif sys.argv[1] == 'play-random':
             cwins = 0
             rwins = 0
-            no_games = int(input("Enter the number of random games to play with trained model[1-10000]: "))
-            if ((no_games >0) and (no_games <10001)):
+            no_games = int(input("Enter the number of random games to play with trained model[1-100000]: "))
+            if ((no_games >0) and (no_games <100001)):
                 for g in range(no_games):
                     toss = np.random.randint(2)
                     if (toss):
@@ -399,8 +403,8 @@ if __name__ == "__main__":
                         p1 = Player ("computer", exp_rate =0)
                         p1.loadPolicy("policy_x")
                         p2 = RandomPlayer("random")
-                    st = State(14,p1,p2)
-                    wonby = st.play2()
+                    st = State(14,p1,p2,verbose=False)
+                    wonby = st.play2(verbose=False)
                     if(wonby == "computer"):
                         cwins += 1
                     else:
@@ -413,11 +417,12 @@ if __name__ == "__main__":
             if ((no_games >0) and (no_games <10000001)):
                 for i in range(2):
                     if (i):
-                        p2 = Player ("computer", exp_rate =0)
+                        # We now train on losses only !!
+                        p2 = Player ("computer", exp_rate =0,tol=True)
                         p2.loadPolicy("policy_o")
                         p1 = RandomPlayer("random")
                     else:
-                        p1 = Player ("computer", exp_rate =0)
+                        p1 = Player ("computer", exp_rate =0,tol=True)
                         p1.loadPolicy("policy_x")
                         p2 = RandomPlayer("random")
                     st = State(14,p1,p2,verbose=False)

@@ -350,18 +350,24 @@ def validate(s,o):
     return ''.join(sarr)
 
 if __name__ == "__main__":
-    if (len(sys.argv) == 2):
+    if (len(sys.argv) == 2 or len(sys.argv)==3):
         if (sys.argv[1] == 'train'):
             p1 = Player("x")
             p2 = Player("o")
 
             st = State(14,p1,p2,verbose=False)
-            st.play(10000000)
+            st.play(30000000)
 
             p1.savePolicy()
             p2.savePolicy()
         elif (sys.argv[1] == 'play-manual'):
-            toss = np.random.randint(2)
+            if (len(sys.argv) == 3):
+                if(sys.argv[2] == 'x'):
+                    toss = 1
+                else:
+                    toss = 0
+            else:
+                toss = np.random.randint(2)
             if (toss):
                 print("You won the toss .. You play 'x' and begin the game")
                 p2 = Player ("computer", exp_rate =0)
